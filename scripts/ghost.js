@@ -1,13 +1,34 @@
-﻿var audio = document.createElement('audio');
+﻿var q = "[{ id: 0, value: 'AAC 256k VBR}, { id: 1, value: 'MP3 192k VBR}, { id: 2, value: 'Opus 96k VBR}]";
+var quality = JSON.parse(q);
+var audio = document.createElement('audio');
 var audiosource = document.createElement('source');
 fill_artists();
 fill_albums();
 fill_tracks();
 
+var selectedQuality = 1;
+
+function changeQuality() {
+    if ((selectedQuality + 1) <= 2) {
+        selectedQuality += 1;
+    } else {
+        selectedQuality = 0;
+    }
+    return getQualityDetails();
+}
+
+function getQualityDetails() {
+    for (i = 0; i < quality.length; i++) {
+        if (selectedQuality == quality[i].id) {
+            return quality[i].value;
+        }
+    }
+}
+
 function fill_artists() {
     $.ajax({
-        url: "https://raw.githubusercontent.com/labelito1/ghostadmin/master/migh.admin/bin/Debug/ghost-artists.json"
-        , success: function (result) {
+        url: "https://raw.githubusercontent.com/labelito1/ghostadmin/master/migh.admin/bin/Debug/ghost-artists.json",
+        success: function (result) {
             //alert(result);
             __artists__ = JSON.parse(result);
         }
@@ -16,8 +37,8 @@ function fill_artists() {
 
 function fill_albums() {
     $.ajax({
-        url: "https://raw.githubusercontent.com/labelito1/ghostadmin/master/migh.admin/bin/Debug/ghost-albums.json"
-        , success: function (result) {
+        url: "https://raw.githubusercontent.com/labelito1/ghostadmin/master/migh.admin/bin/Debug/ghost-albums.json",
+        success: function (result) {
             //alert(result);
             __albums__ = JSON.parse(result);
         }
@@ -26,8 +47,8 @@ function fill_albums() {
 
 function fill_tracks() {
     $.ajax({
-        url: "https://raw.githubusercontent.com/labelito1/ghostadmin/master/migh.admin/bin/Debug/ghost-tracks.json"
-        , success: function (result) {
+        url: "https://raw.githubusercontent.com/labelito1/ghostadmin/master/migh.admin/bin/Debug/ghost-tracks.json",
+        success: function (result) {
             //alert(result);
             __tracks__ = JSON.parse(result);
         }
@@ -89,8 +110,7 @@ function queueAdd(id) {
             }
         }
         __queue__ = __queue__.substring(0, __queue__.length - 1);
-    }
-    else {
+    } else {
         __queue__ += id + ";";
     }
 };
@@ -106,8 +126,7 @@ function queueAddList(list) {
             }
         }
         __queue__ = __queue__.substring(0, __queue__.length - 1);
-    }
-    else {
+    } else {
         __queue__ = list;
     }
 };
@@ -128,6 +147,9 @@ $(document).ready(function () {
             return false;
         };
     }
+    $("#lblAudioFormat").html(getQualityDetails());
+    console.log(getQualityDetails());
+    console.log(selectedQuality);
     fillArtists();
     adjustSize();
     adjustMisc();
@@ -204,8 +226,7 @@ $(document).ready(function () {
     for (var i = list.length - 1, item; item = list[i]; i--) {
         if ($(item).attr('z-index') == '2147483647') {
             $(item).hide()
-        }
-        else {}
+        } else {}
     }
 });
 
