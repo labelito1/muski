@@ -137,6 +137,42 @@
         <script>
             var audio = document.createElement('audio');
             var audiosource = document.createElement('source');
+
+            var __prevalbum__;
+            var img = document.createElement('img');
+            img.setAttribute('crossOrigin', 'Anonymous');
+            img.addEventListener('load', function() {
+                var track = getTrack(__nowplayingid__);
+                var album = getAlbum(track.album_id);
+                if (__prevalbum__ != album.id) {
+                    __prevalbum__ = album.id;
+                    var vibrant = new Vibrant(img);
+                    var swatches = vibrant.swatches();
+                    for (var swatch in swatches) {
+                        if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
+                            console.log(swatches['Muted'].getHex());
+                            $('#lblSongArtist').css('color', swatches['Muted'].getTitleTextColor());
+                            $('#lblSongTitle').css('color', swatches['Muted'].getTitleTextColor());
+                            $('#lblSongAlbum').css('color', swatches['Muted'].getTitleTextColor());
+                            try {
+                                $('#form1').css('background', 'linear-gradient(to bottom,' + swatches['Muted'].getHex() + ' 0%,#000000 70%');
+                            } catch (err) {
+                                $('#form1').css('background', 'linear-gradient(to bottom,' + swatches['Vibrant'].getHex() + ' 0%,#000000 70%');
+                            }
+
+                            return;
+                        }
+                    }
+                    /*
+                     * Results into:
+                     * Vibrant #7a4426
+                     * Muted #7b9eae
+                     * DarkVibrant #348945
+                     * DarkMuted #141414
+                     * LightVibrant #f3ccb4
+                     */
+                }
+            });
             (function() {
                 function scrollHorizontally(e) {
                     var prev = false;
@@ -220,16 +256,15 @@
                 if (Math.abs(lastScrollTop - st) <= delta) {
                     return;
                 }
-                //                if (st > lastScrollTop && st > navbarHeight) {
-                //                    $('#topbar').removeClass('nav-down').addClass('nav-up');
-                //                }
-                //                else {
-                //                    $('#topbar').removeClass('nav-up').addClass('nav-down');
-                //                }
-                if (st > 60) {
-                    $('#topbar').removeClass('nav-down').addClass('nav-up');
+                if (st > lastScrollTop && st > navbarHeight) {
+                    //$('#topbar').removeClass('nav-down').addClass('nav-up');
                 } else {
-                    $('#topbar').removeClass('nav-up').addClass('nav-down');
+                    //$('#topbar').removeClass('nav-up').addClass('nav-down');
+                }
+                if (st > 0) {
+                    $('#topbar').removeClass('transparent').addClass('dim');
+                } else {
+                    $('#topbar').addClass('transparent').removeClass('dim');
                 }
                 lastScrollTop = st;
             }
@@ -429,22 +464,14 @@
             };
 
             ////x10
-            var tdTag = document.getElementById('tdTag');
-            tdTag.onclick = function(event) {
-                var artistlistdiv = document.getElementById('artistlistdiv');
-                if (artistlistdiv.style.width == '0px') {
-                    artistlistdiv.style.width = '160px';
-                } else {
-                    artistlistdiv.style.width = '0px';
-                }
-            };
+
             var tdTag = document.getElementById('tdTag');
             tdTag.ondblclick = function(event) {
-                //goFullScreen();
+                goFullScreen();
             };
 
             function goFullScreen() {
-                var fullscrn = document.getElementById("xd");
+                var fullscrn = document.getElementsByTagName("html")[0];
                 var req = fullscrn.requestFullScreen || fullscrn.webkitRequestFullScreen || fullscrn.mozRequestFullScreen;
                 req.call(fullscrn);
             }
@@ -1564,6 +1591,8 @@
                             for (var j = 0; j < __albums__.length; j++) {
                                 if (__albums__[j].id == __tracks__[i].album_id) {
                                     cover = __albums__[j].cover;
+                                    img.src = __albums__[j].cover;
+                                    console.log(__albums__[j].cover);
                                     break;
                                 }
                             }
@@ -1628,6 +1657,7 @@
                             for (var j = 0; j < __albums__.length; j++) {
                                 if (__albums__[j].id == __tracks__[i].album_id) {
                                     cover = __albums__[j].cover;
+                                    img.src = __albums__[j].cover;
                                     break;
                                 }
                             }

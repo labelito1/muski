@@ -44,15 +44,22 @@
 }
 
 #topbar {
-    -moz-transition: top 200ms linear;
-    -o-transition: top 200ms linear;
-    -webkit-transition: top 200ms linear;
-    transition: top 200ms linear;
+    -moz-transition: 200ms linear;
+    -o-transition: 200ms linear;
+    -webkit-transition: 200ms linear;
+    transition: 200ms linear;
     border-spacing: 0px;
     position: fixed;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.transparent {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.dim {
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .duration div {
