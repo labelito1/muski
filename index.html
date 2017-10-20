@@ -19,6 +19,14 @@
             height: 0px;
         }
 
+        .clickable {
+            transition: 200ms linear;
+        }
+
+        .clickable:active {
+            opacity: 0.5;
+        }
+
     </style>
 </head>
 
@@ -99,11 +107,11 @@
             <table style="height:100%; width:100%">
                 <tbody>
                     <tr>
-                        <td style="width:33.3%; text-align:right"> <img alt="gotoalbum" src="images/album.png" style="width: 35px; height: 35px; vertical-align:middle" /> </td>
+                        <td style="width:33.3%; text-align:right"> <img alt="gotoalbum" class="clickable" src="images/album.png" style="width: 35px; height: 35px; vertical-align:middle" /> </td>
                         <td style="width:33.3%; text-align:center">
-                            <label id="lblAudioFormat" class="dark" style="padding:5px"></label>
+                            <label id="lblAudioFormat" class="dark clickable" style="padding:5px"></label>
                         </td>
-                        <td style="width:33.3%; text-align:left"> <img alt="gotoartist" src="images/artist.png" style="width: 35px; height: 35px; vertical-align:middle" /> </td>
+                        <td style="width:33.3%; text-align:left"> <img alt="gotoartist" class="clickable" src="images/artist.png" style="width: 35px; height: 35px; vertical-align:middle" /> </td>
                     </tr>
                 </tbody>
             </table>
@@ -125,13 +133,13 @@
                 <label id="duration" style="position:relative; pointer-events:none; z-index: 2; display:flex; font-size: 9px; color: #FBFBFB; margin-right:3px">00:00</label>
             </div>
             <div style="position:relative; z-index: 5; text-align: center; height: 100%; display:inline-flex">
-                <div> <img id="btnOpenArtists" src="images/ic_artist.png" style="width: 25px; height: 25px; margin-right:20px" /> </div>
-                <div> <img id="mute" src="images/unmute.png" style="width: 21px; height: 21px; margin-right:20px" /> </div>
-                <div> <img id="previous" src="images/previous.png" style="width: 25px; height: 25px; margin-right: 10px" /> </div>
-                <div> <img id="play" src="images/play.png" style="width: 60px; height: 60px" /> </div>
-                <div> <img id="next" src="images/next.png" style="width: 25px; height: 25px; margin-left: 10px" /> </div>
-                <div> <img id="openmenu" src="images/menu.png" style="width: 21px; height: 21px; margin-left:20px" /> </div>
-                <div> <img id="btnOpenSearch" src="images/ic_search.png" style="width: 25px; height: 25px; margin-left:20px" /> </div>
+                <div> <img id="btnOpenArtists" class="clickable" src="images/ic_artist.png" style="width: 25px; height: 25px; margin-right:20px" /> </div>
+                <div> <img id="mute" class="clickable" src="images/unmute.png" style="width: 21px; height: 21px; margin-right:20px" /> </div>
+                <div> <img id="previous" class="clickable" src="images/previous.png" style="width: 25px; height: 25px; margin-right: 10px" /> </div>
+                <div> <img id="play" class="clickable" src="images/play.png" style="width: 60px; height: 60px" /> </div>
+                <div> <img id="next" class="clickable" src="images/next.png" style="width: 25px; height: 25px; margin-left: 10px" /> </div>
+                <div> <img id="openmenu" class="clickable" src="images/menu.png" style="width: 21px; height: 21px; margin-left:20px" /> </div>
+                <div> <img id="btnOpenSearch" class="clickable" src="images/ic_search.png" style="width: 25px; height: 25px; margin-left:20px" /> </div>
             </div>
         </div>
         <script>
@@ -245,9 +253,15 @@
                 }
             });
             setInterval(function() {
-                if (didScroll) {
-                    hasScrolled();
-                    didScroll = false;
+                //                if (didScroll) {
+                //                    hasScrolled();
+                //                    didScroll = false;
+                //                }
+                var st = $('#form1').scrollTop();
+                if (st > 0) {
+                    $('#topbar').removeClass('transparent').addClass('dim');
+                } else {
+                    $('#topbar').addClass('transparent').removeClass('dim');
                 }
             }, 100);
 
@@ -381,7 +395,7 @@
             btnOpenArtists.onclick = function(event) {
                 hideSearchBar();
                 openArtists();
-                unfade(btnOpenArtists);
+                //unfade(btnOpenArtists);
             };
 
             function openArtists() {
@@ -390,7 +404,7 @@
             }
             var btnSearch = document.getElementById('btnSearch');
             btnSearch.onclick = function(event) {
-                unfade(btnSearch);
+                //unfade(btnSearch);
                 hideSearchBar();
             };
             var lblArtist = document.getElementById('lblArtist');
@@ -410,7 +424,7 @@
             }
             var btnopenmenu = document.getElementById('openmenu');
             btnopenmenu.onclick = function(event) {
-                unfade(btnopenmenu);
+                //unfade(btnopenmenu);
                 hideSearchBar();
                 $('#artistdiv').hide();
                 $('#optiondiv').toggle();
@@ -449,7 +463,7 @@
                     document.getElementById('txtSearch').focus();
                     //hideSearchBar();
                 }
-                unfade(btnOpenSearch);
+                //unfade(btnOpenSearch);
             };
             var mute = document.getElementById('mute');
             mute.onclick = function(event) {
@@ -460,7 +474,7 @@
                     audio.muted = true;
                     mute.src = 'images/mute.png';
                 }
-                unfade(mute);
+                //unfade(mute);
             };
 
             ////x10
@@ -481,7 +495,7 @@
                 var target = getEventTarget(event);
                 if (target.getAttribute('alt') == 'gotoartist') {
                     try {
-                        unfade(target);
+                        //unfade(target);
                         var track = getTrack(__nowplayingid__);
                         var artist = getArtist(track.artist_id);
                         var target = getEventTarget(event);
@@ -502,7 +516,7 @@
                 }
                 if (target.getAttribute('alt') == 'gotoalbum') {
                     try {
-                        unfade(target);
+                        //unfade(target);
                         var track = getTrack(parseInt(__nowplayingid__));
                         var album = getAlbum(track.album_id);
                         var artist = getArtist(track.artist_id);
@@ -540,7 +554,7 @@
 
                         checkSelectedAlbum();
                         $("#form1").animate({
-                            scrollTop: 410
+                            scrollTop: 340
                         }, 0);
                     } catch (err) {}
                 }
@@ -1121,7 +1135,7 @@
                 }
                 //document.getElementById('artistdiv').style.display = 'inline';
                 $('img').on('error', function() {
-                    //$(this).attr('src', 'images/artist.png');
+                    $(this).attr('src', 'images/artist.png');
                 });
                 checkSelectedArtist();
             }
@@ -1296,12 +1310,12 @@
             //newplayer
             $('#next').on('click', function() {
                 var btn = document.getElementById('next');
-                unfade(btn);
+                //unfade(btn);
                 __next__();
             });
             $('#previous').on('click', function() {
                 var btn = document.getElementById('previous');
-                unfade(btn);
+                //unfade(btn);
                 if (RestartSong()) {
                     audio.currentTime = 0;
                 } else {
@@ -1357,8 +1371,8 @@
                 var y = e.pageY - pOffset.top;
                 if (y > 10) {
                     var btn = document.getElementById('play');
-                    if ($(audiosource).attr('src') !== null) {
-                        unfade(btn);
+                    if ($(audiosource).attr('src') != null || $(audiosource).attr('src') == typeof undefined) {
+                        //unfade(btn);
                         if (audio.paused) {
                             audio.play();
                             play.setAttribute('src', 'images/pause.png');
