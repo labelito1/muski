@@ -1,6 +1,4 @@
-﻿[type=imgplay]:hover {
-    background-color: #333333;
-}
+﻿[type=imgplay]:hover {}
 
 [type=albumitem]:hover,
 [type=artist]:hover {}
@@ -8,7 +6,7 @@
 [type=imgplay],
 [type=albumitem],
 [type=artist] {
-    transition: 200ms linear;
+    transition: 300ms linear;
 }
 
 #tracklist {

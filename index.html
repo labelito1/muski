@@ -8,6 +8,10 @@
     <link href="styles/ghost.css" rel="stylesheet" />
     <script src="scripts/Vibrant.min.js"></script>
     <script src="scripts/jquery.js"></script>
+    <script src="scripts/jszip.min.js"></script>
+    <script src="scripts/FileSaver.min.js"></script>
+    <script src="scripts/jszip-utils.js"></script>
+    <script src="scripts/tools.js"></script>
     <!--    <script src="scripts/ghost.js"></script>-->
     <meta http-equiv="Content-Type" name="viewport" content="initial-scale=1, user-scalable=no" />
     <style>
@@ -163,7 +167,6 @@
                     var swatches = vibrant.swatches();
                     for (var swatch in swatches) {
                         if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
-                            console.log(swatches['Muted'].getHex());
                             $('#lblSongArtist').css('color', swatches['Muted'].getTitleTextColor());
                             $('#lblSongTitle').css('color', swatches['Muted'].getTitleTextColor());
                             $('#lblSongAlbum').css('color', swatches['Muted'].getTitleTextColor());
@@ -172,20 +175,25 @@
                             //                            } catch (err) {
                             //                                $(document.getElementsByTagName('body')[0]).css('background', 'linear-gradient(to bottom,' + swatches['Vibrant'].getHex() + ' 0%,#000000 70%');
                             //                            }
-                            var colorMuted = getTintedColor(swatches['Muted'].getHex(), -100);
-                            var colorVibrant = getTintedColor(swatches['Vibrant'].getHex(), -100);
+                            var colorMuted;
+                            var colorVibrant;
                             setTimeout(function() {
                                 try {
-                                    $(document.getElementsByTagName('body')[0]).css('background-color', colorMuted);
-                                    $("#footer").css("background-color", colorMuted);
-                                    $("#footerbar").css("background-color", colorMuted);
-                                    $("#artistlist").css("background-color", colorMuted);
-                                } catch (err) {
+                                    colorVibrant = getTintedColor(swatches['DarkMuted'].getHex(), -100);
                                     $(document.getElementsByTagName('body')[0]).css('background-color', colorVibrant);
                                     $("#footer").css("background-color", colorVibrant);
+                                    $("#topbar").css("background-color", colorVibrant);
                                     $("#footerbar").css("background-color", colorVibrant);
                                     $("#artistlist").css("background-color", colorVibrant);
+                                } catch (err) {
+                                    colorMuted = getTintedColor(swatches['Muted'].getHex(), -100);
+                                    $(document.getElementsByTagName('body')[0]).css('background-color', colorMuted);
+                                    $("#footer").css("background-color", colorMuted);
+                                    $("#topbar").css("background-color", colorMuted);
+                                    $("#footerbar").css("background-color", colorMuted);
+                                    $("#artistlist").css("background-color", colorMuted);
                                 }
+                                checkNowplaying();
                             }, 1000);
 
                             return;
@@ -981,7 +989,7 @@
                         var itemid = parseInt(items[i].getAttribute('alt'));
                         if (itemid == parseInt(__nowplayingid__)) {
                             items[i].style.borderColor = 'white';
-                            items[i].style.backgroundColor = '#333333';
+                            items[i].style.backgroundColor = 'rgba(0, 0, 0, 0.23)';
                         } else {
                             items[i].style.backgroundColor = 'rgba(0, 0, 0, 0.23)';
                             items[i].style.borderColor = 'rgba(0, 0, 0, 0.23)';
@@ -2015,6 +2023,7 @@
                         label.style.maxWidth = '80%';
                         label.style.whiteSpace = 'normal';
                         label.setAttribute('type', 'imgplay');
+
                         label.id = __tracks__[i].id;
                         duration.id = __tracks__[i].id;
                         duration.setAttribute('type', 'imgplay');
@@ -2040,7 +2049,7 @@
                         li.style.verticalAlign = 'middle';
                         li.setAttribute('type', 'imgplay');
                         li.id = __tracks__[i].id;
-                        div.addEventListener('dblclick', play_track)
+                        div.addEventListener('dblclick', play_track);
                         li.appendChild(div);
                         //li.style.maxWidth = '400px';
                         ol.appendChild(li);
@@ -2085,12 +2094,19 @@
                         label.style.fontSize = '11px';
                         label.innerHTML = __albums__[i].title;
                         label.style.paddingBottom = '3px';
+                        label.setAttribute("type", __albums__[i].id);
+                        label.addEventListener('dblclick', function(evt) {
+                            alert("Descargando album...");
+                            var target = evt.currentTarget;
+                            downloadAlbum($(target).attr("type"), selectedQuality);
+                        });
                         year.className = 'searchtext';
                         //year.style.fontWeight = "bold";
                         year.style.width = '100px';
                         year.style.fontSize = '9px';
                         year.style.paddingTop = '3px';
                         year.innerHTML = __albums__[i].year;
+
                         //year.style.paddingTop = '3px';
 
                         img.alt = __albums__[i].title + "@" + __albums__[i].artist + "@" + __albums__[i].id;
