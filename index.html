@@ -181,16 +181,18 @@
                                 try {
                                     colorVibrant = getTintedColor(swatches['DarkMuted'].getHex(), -100);
                                     $(document.getElementsByTagName('body')[0]).css('background-color', colorVibrant);
-                                    $("#footer").css("background-color", colorVibrant);
-                                    $("#topbar").css("background-color", colorVibrant);
-                                    $("#footerbar").css("background-color", colorVibrant);
+                                    $("#footer").css("background-color", getTintedColor(colorVibrant, -10));
+                                    $("#topbar").css("background-color", getTintedColor(colorVibrant, -10));
+                                    $("#footerbar").css("background-color", getTintedColor(colorVibrant, -10));
+                                    $("#optiondiv").css("background-color", getTintedColor(colorVibrant, -10));
                                     $("#artistlist").css("background-color", colorVibrant);
                                 } catch (err) {
                                     colorMuted = getTintedColor(swatches['Muted'].getHex(), -100);
                                     $(document.getElementsByTagName('body')[0]).css('background-color', colorMuted);
-                                    $("#footer").css("background-color", colorMuted);
-                                    $("#topbar").css("background-color", colorMuted);
-                                    $("#footerbar").css("background-color", colorMuted);
+                                    $("#footer").css("background-color", getTintedColor(colorMuted, -10));
+                                    $("#topbar").css("background-color", getTintedColor(colorMuted, -10));
+                                    $("#footerbar").css("background-color", getTintedColor(colorMuted, -10));
+                                    $("#optiondiv").css("background-color", getTintedColor(colorMuted, -10));
                                     $("#artistlist").css("background-color", colorMuted);
                                 }
                                 checkNowplaying();

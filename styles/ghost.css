@@ -149,7 +149,7 @@
     position: fixed;
     bottom: 81px;
     margin-left: -50%;
-    /* Negative half of width. */
+    transition: background-color 0.8s linear;
 }
 
 img {
