@@ -12,6 +12,7 @@
     <script src="scripts/FileSaver.min.js"></script>
     <script src="scripts/jszip-utils.js"></script>
     <script src="scripts/tools.js"></script>
+    <script src="scripts/jscolor.js"></script>
     <!--    <script src="scripts/ghost.js"></script>-->
     <meta http-equiv="Content-Type" name="viewport" content="initial-scale=1, user-scalable=no" />
     <style>
@@ -78,7 +79,7 @@
         <div id="topbar" class="nav-down">
             <table style="border-spacing:0px; width:100%; height:100%">
                 <tr style="width:100%">
-                    <td id="tdImg" style="text-align: left; width:65px"> <img id="imgSongCoverTop" alt="imgSongCover" src="images/album.png" /> </td>
+                    <td id="tdImg" style="text-align: left; width:65px"> <img id="imgSongCoverTop" class="jscolor" alt="imgSongCover" style="background-color: black" src="images/album.png" /> </td>
                     <td id="tdTag" style="text-align:left; width:100%; vertical-align:middle; height:100%">
                         <div style="height:100%; width:100%; display:grid"> <span style="display: inline-block; height: 100%; vertical-align: top; visibility:hidden"></span>
                             <label id="lblSongTitle" style="font-size:11px; color:#FBFBFB">Título</label>
@@ -152,6 +153,17 @@
             </div>
         </div>
         <script>
+            $(".jscolor").bind("DOMSubtreeModified", function(evt) {
+                var color = $(evt.currentTarget).css("background-color");
+                console.log(color);
+                $("body").css("background-color", color);
+                $("#footer").css("background-color", color);
+                $("#topbar").css("background-color", color);
+                $("#footerbar").css("background-color", color);
+                $("#optiondiv").css("background-color", color);
+                $("#artistlist").css("background-color", color);
+            });
+
             var audio = document.createElement('audio');
             var audiosource = document.createElement('source');
 
@@ -185,7 +197,7 @@
                                     $("#topbar").css("background-color", getTintedColor(colorVibrant, -10));
                                     $("#footerbar").css("background-color", getTintedColor(colorVibrant, -10));
                                     $("#optiondiv").css("background-color", getTintedColor(colorVibrant, -10));
-                                    $("#artistlist").css("background-color", colorVibrant);
+                                    $("#artistlist").css("background-color", getTintedColor(colorVibrant, -10));
                                 } catch (err) {
                                     colorMuted = getTintedColor(swatches['Muted'].getHex(), -100);
                                     $(document.getElementsByTagName('body')[0]).css('background-color', colorMuted);
@@ -193,7 +205,7 @@
                                     $("#topbar").css("background-color", getTintedColor(colorMuted, -10));
                                     $("#footerbar").css("background-color", getTintedColor(colorMuted, -10));
                                     $("#optiondiv").css("background-color", getTintedColor(colorMuted, -10));
-                                    $("#artistlist").css("background-color", colorMuted);
+                                    $("#artistlist").css("background-color", getTintedColor(colorMuted, -10));
                                 }
                                 checkNowplaying();
                             }, 1000);
@@ -267,11 +279,14 @@
                 if (g > 255) g = g - (g - 255);
                 var b = Math.abs((rgb & 0xFF) + v);
                 if (b > 255) b = b - (b - 255);
-                r = Number(r < 0 || isNaN(r)) ? 0 : ((r > 255) ? 255 : r).toString(16);
+                r = Number(r <
+                    0 || isNaN(r)) ? 0 : ((r > 255) ? 255 : r).toString(16);
                 if (r.length == 1) r = '0' + r;
-                g = Number(g < 0 || isNaN(g)) ? 0 : ((g > 255) ? 255 : g).toString(16);
+                g = Number(g <
+                    0 || isNaN(g)) ? 0 : ((g > 255) ? 255 : g).toString(16);
                 if (g.length == 1) g = '0' + g;
-                b = Number(b < 0 || isNaN(b)) ? 0 : ((b > 255) ? 255 : b).toString(16);
+                b = Number(b <
+                    0 || isNaN(b)) ? 0 : ((b > 255) ? 255 : b).toString(16);
                 if (b.length == 1) b = '0' + b;
                 return "#" + r + g + b;
             }
